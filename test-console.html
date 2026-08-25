@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Console Error Test</title>
+</head>
+<body>
+    <h1>Testing script.js for errors...</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Capture console errors
+        window.onerror = function(msg, url, line, col, error) {
+            document.getElementById('results').innerHTML += 
+                '<div style="color: red; padding: 10px; margin: 5px; background: #ffebee; border-radius: 5px;">' +
+                '<strong>Error:</strong> ' + msg + '<br>' +
+                '<strong>Line:</strong> ' + line + '<br>' +
+                '<strong>Details:</strong> ' + (error ? error.stack : 'N/A') +
+                '</div>';
+            return true;
+        };
+
+        console.log('Starting tests...');
+        
+        // Test if script loads
+        setTimeout(() => {
+            const results = document.getElementById('results');
+            
+            // Check if CONFIG exists
+            if (typeof CONFIG !== 'undefined') {
+                results.innerHTML += '<div style="color: green; padding: 10px; margin: 5px; background: #e8f5e9; border-radius: 5px;">✅ CONFIG object loaded</div>';
+                console.log('CONFIG:', CONFIG);
+            } else {
+                results.innerHTML += '<div style="color: red; padding: 10px; margin: 5px; background: #ffebee; border-radius: 5px;">❌ CONFIG object not found</div>';
+            }
+            
+            // Check if state exists
+            if (typeof state !== 'undefined') {
+                results.innerHTML += '<div style="color: green; padding: 10px; margin: 5px; background: #e8f5e9; border-radius: 5px;">✅ State object loaded</div>';
+                results.innerHTML += '<div style="padding: 10px; margin: 5px; background: #f5f5f5; border-radius: 5px;"><pre>' + 
+                    JSON.stringify(state, null, 2) + '</pre></div>';
+            } else {
+                results.innerHTML += '<div style="color: red; padding: 10px; margin: 5px; background: #ffebee; border-radius: 5px;">❌ State object not found</div>';
+            }
+            
+            // Check if functions exist
+            const functions = [
+                'generateVideoSmart',
+                'getAvailableProviders',
+                'generateVideoWithProvider',
+                'trackProviderSuccess',
+                'loadProviderStats'
+            ];
+            
+            functions.forEach(func => {
+                if (typeof window[func] === 'function') {
+                    results.innerHTML += '<div style="color: green; padding: 5px; margin: 2px; background: #e8f5e9; border-radius: 5px;">✅ Function ' + func + ' exists</div>';
+                } else {
+                    results.innerHTML += '<div style="color: orange; padding: 5px; margin: 2px; background: #fff3e0; border-radius: 5px;">⚠️ Function ' + func + ' not in global scope (may be local)</div>';
+                }
+            });
+            
+        }, 1000);
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

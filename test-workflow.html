@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Test - AI Video Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .status {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5568d3; }
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #667eea;">🧪 AI Video Generator - Workflow Test</h1>
+    
+    <div class="test-card">
+        <h2>1️⃣ Initialization Test</h2>
+        <div id="init-results"></div>
+        <button onclick="testInit()">Run Init Test</button>
+    </div>
+
+    <div class="test-card">
+        <h2>2️⃣ API Keys Test</h2>
+        <div id="apikey-results"></div>
+        <button onclick="testApiKeys()">Run API Keys Test</button>
+    </div>
+
+    <div class="test-card">
+        <h2>3️⃣ Provider Availability Test</h2>
+        <div id="provider-results"></div>
+        <button onclick="testProviders()">Run Provider Test</button>
+    </div>
+
+    <div class="test-card">
+        <h2>4️⃣ Auto-Failover Logic Test</h2>
+        <div id="failover-results"></div>
+        <button onclick="testFailover()">Run Failover Test</button>
+    </div>
+
+    <div class="test-card">
+        <h2>5️⃣ DOM Elements Test</h2>
+        <div id="dom-results"></div>
+        <button onclick="testDOM()">Run DOM Test</button>
+    </div>
+
+    <div class="test-card">
+        <h2>📊 Full System Status</h2>
+        <div id="system-status"></div>
+        <button onclick="runAllTests()">Run All Tests</button>
+    </div>
+
+    <script>
+        let testResults = {
+            init: false,
+            apikeys: false,
+            providers: false,
+            failover: false,
+            dom: false
+        };
+
+        function testInit() {
+            const div = document.getElementById('init-results');
+            div.innerHTML = '<div class="status info">Testing initialization...</div>';
+            
+            setTimeout(() => {
+                let html = '';
+                
+                if (typeof CONFIG !== 'undefined') {
+                    html += '<div class="status success">✅ CONFIG loaded</div>';
+                    html += '<pre>' + JSON.stringify(CONFIG.VIDEO_PROVIDERS, null, 2).substring(0, 500) + '...</pre>';
+                    testResults.init = true;
+                } else {
+                    html += '<div class="status error">❌ CONFIG not found</div>';
+                }
+                
+                if (typeof state !== 'undefined') {
+                    html += '<div class="status success">✅ State loaded</div>';
+                    html += '<div class="status info">Groq Key: ' + (state.apiKeys.groq ? '✓ Set' : '✗ Missing') + '</div>';
+                    html += '<div class="status info">HF Token: ' + (state.apiKeys.huggingface ? '✓ Set' : '✗ Missing') + '</div>';
+                } else {
+                    html += '<div class="status error">❌ State not found</div>';
+                }
+                
+                div.innerHTML = html;
+                updateSystemStatus();
+            }, 500);
+        }
+
+        function testApiKeys() {
+            const div = document.getElementById('apikey-results');
+            div.innerHTML = '<div class="status info">Testing API keys...</div>';
+            
+            setTimeout(() => {
+                let html = '';
+                
+                if (typeof state !== 'undefined' && state.apiKeys) {
+                    const groqKey = state.apiKeys.groq;
+                    const hfToken = state.apiKeys.huggingface;
+                    
+                    if (groqKey && groqKey.startsWith('gsk_')) {
+                        html += '<div class="status success">✅ Groq API key valid format</div>';
+                        html += '<div class="status info">Key: ' + groqKey.substring(0, 15) + '...</div>';
+                        testResults.apikeys = true;
+                    } else {
+                        html += '<div class="status error">❌ Groq API key invalid or missing</div>';
+                    }
+                    
+                    if (hfToken && hfToken.startsWith('hf_')) {
+                        html += '<div class="status success">✅ Hugging Face token valid format</div>';
+                        html += '<div class="status info">Token: ' + hfToken.substring(0, 15) + '...</div>';
+                    } else {
+                        html += '<div class="status error">❌ Hugging Face token invalid or missing</div>';
+                    }
+                } else {
+                    html += '<div class="status error">❌ State or apiKeys not available</div>';
+                }
+                
+                div.innerHTML = html;
+                updateSystemStatus();
+            }, 500);
+        }
+
+        function testProviders() {
+            const div = document.getElementById('provider-results');
+            div.innerHTML = '<div class="status info">Testing providers...</div>';
+            
+            setTimeout(() => {
+                let html = '';
+                
+                if (typeof getAvailableProviders === 'function') {
+                    html += '<div class="status success">✅ getAvailableProviders() found</div>';
+                    
+                    try {
+                        const providers = getAvailableProviders();
+                        html += '<div class="status success">✅ Got ' + providers.length + ' available providers</div>';
+                        
+                        providers.forEach((id, index) => {
+                            const provider = CONFIG.VIDEO_PROVIDERS[id];
+                            html += '<div class="status info">' + (index + 1) + '. ' + provider.name + 
+                                   (provider.free ? ' [FREE]' : ' [PAID]') + '</div>';
+                        });
+                        
+                        testResults.providers = true;
+                    } catch (e) {
+                        html += '<div class="status error">❌ Error getting providers: ' + e.message + '</div>';
+                    }
+                } else {
+                    html += '<div class="status error">❌ getAvailableProviders() not found</div>';
+                }
+                
+                div.innerHTML = html;
+                updateSystemStatus();
+            }, 500);
+        }
+
+        function testFailover() {
+            const div = document.getElementById('failover-results');
+            div.innerHTML = '<div class="status info">Testing failover logic...</div>';
+            
+            setTimeout(() => {
+                let html = '';
+                
+                const functions = [
+                    'generateVideoSmart',
+                    'generateVideoWithProvider',
+                    'trackProviderSuccess',
+                    'trackProviderFailure',
+                    'loadProviderStats'
+                ];
+                
+                let allFound = true;
+                functions.forEach(func => {
+                    if (typeof window[func] === 'function') {
+                        html += '<div class="status success">✅ ' + func + '() exists</div>';
+                    } else {
+                        html += '<div class="status warning">⚠️ ' + func + '() not in global scope (may be in closure)</div>';
+                        allFound = false;
+                    }
+                });
+                
+                if (typeof state !== 'undefined' && state.videoProvider === 'auto') {
+                    html += '<div class="status success">✅ Auto mode enabled by default</div>';
+                }
+                
+                if (allFound) {
+                    testResults.failover = true;
+                }
+                
+                div.innerHTML = html;
+                updateSystemStatus();
+            }, 500);
+        }
+
+        function testDOM() {
+            const div = document.getElementById('dom-results');
+            div.innerHTML = '<div class="status info">Testing DOM elements...</div>';
+            
+            setTimeout(() => {
+                let html = '';
+                
+                if (typeof elements !== 'undefined') {
+                    html += '<div class="status success">✅ Elements object loaded</div>';
+                    
+                    const requiredElements = [
+                        'generateBtn',
+                        'userInput',
+                        'groqKey',
+                        'huggingfaceKey',
+                        'videoProvider',
+                        'generateVideosBtn'
+                    ];
+                    
+                    let allFound = true;
+                    requiredElements.forEach(elem => {
+                        if (elements[elem]) {
+                            html += '<div class="status success">✅ ' + elem + ' found</div>';
+                        } else {
+                            html += '<div class="status error">❌ ' + elem + ' not found</div>';
+                            allFound = false;
+                        }
+                    });
+                    
+                    if (allFound) {
+                        testResults.dom = true;
+                    }
+                } else {
+                    html += '<div class="status error">❌ Elements object not found</div>';
+                }
+                
+                div.innerHTML = html;
+                updateSystemStatus();
+            }, 500);
+        }
+
+        function updateSystemStatus() {
+            const div = document.getElementById('system-status');
+            const total = Object.keys(testResults).length;
+            const passed = Object.values(testResults).filter(v => v).length;
+            const percentage = Math.round((passed / total) * 100);
+            
+            let html = '<div style="text-align: center; padding: 20px;">';
+            html += '<h3>Tests Passed: ' + passed + ' / ' + total + ' (' + percentage + '%)</h3>';
+            
+            if (percentage === 100) {
+                html += '<div class="status success" style="font-size: 18px; margin-top: 15px;">🎉 ALL TESTS PASSED! System ready for production.</div>';
+            } else if (percentage >= 80) {
+                html += '<div class="status warning" style="font-size: 18px; margin-top: 15px;">⚠️ Most tests passed. Minor issues detected.</div>';
+            } else {
+                html += '<div class="status error" style="font-size: 18px; margin-top: 15px;">❌ System has errors. Review failed tests.</div>';
+            }
+            
+            html += '</div>';
+            div.innerHTML = html;
+        }
+
+        function runAllTests() {
+            testInit();
+            setTimeout(() => testApiKeys(), 600);
+            setTimeout(() => testProviders(), 1200);
+            setTimeout(() => testFailover(), 1800);
+            setTimeout(() => testDOM(), 2400);
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+    
+    <!-- Load the actual script -->
+    <script src="script.js"></script>
+</body>
+</html>

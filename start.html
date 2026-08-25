@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 AI Video Generator - Start Here</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .feature p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .cta-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 40px 0 20px 0;
+        }
+        
+        .cta-btn {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-btn.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            background: #f0f0f0;
+            border-radius: 12px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #555;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        
+        .steps {
+            margin: 30px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .step-content p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .pricing {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .pricing h3 {
+            color: #155724;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .price-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .price-item strong {
+            color: #667eea;
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .price-item p {
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .header p { font-size: 1.1em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .cta-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 AI Video Generator</h1>
+            <p>Create Urdu Historical Story Videos Automatically</p>
+        </div>
+        
+        <div class="content">
+            <h2 style="text-align: center; color: #333; margin-bottom: 30px;">
+                Generate Professional Videos in Minutes, Not Hours
+            </h2>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">~2min</span>
+                    <span class="stat-label">Generation Time</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$0.30</span>
+                    <span class="stat-label">Per Video (avg)</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">768p</span>
+                    <span class="stat-label">HD Quality</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5sec</span>
+                    <span class="stat-label">Per Scene</span>
+                </div>
+            </div>
+            
+            <h3 style="color: #333; margin: 40px 0 20px 0;">✨ Key Features</h3>
+            
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>🚀 Fully Automated</h3>
+                    <p>Enter idea → Get complete story → Generate videos → Download. No manual work required!</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🌍 Urdu Specialized</h3>
+                    <p>Native Urdu story generation with cultural accuracy and historical context.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>💰 Cost-Effective</h3>
+                    <p>$5 free credits = 10-20 videos. Then ~$0.10-0.30 per video. Manual mode is FREE!</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>⚡ Super Fast</h3>
+                    <p>3 scenes in ~2 minutes. 5 scenes in ~3 minutes. Real-time progress tracking.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🎨 Multiple Types</h3>
+                    <p>Historical, Cultural, Fantasy, Educational stories in Urdu language.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🔒 Secure & Private</h3>
+                    <p>No backend, no database. API keys stored locally in your browser only.</p>
+                </div>
+            </div>
+            
+            <h3 style="color: #333; margin: 40px 0 20px 0;">📋 How It Works</h3>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Get Free API Keys</h4>
+                        <p>Groq (free forever) + FAL.ai ($5 free credits) = ~10-20 videos free!</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Enter Your Story Idea</h4>
+                        <p>In Urdu or English. Example: "میر تقی میر کی زندگی" or "Story about Akbar"</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Choose Settings</h4>
+                        <p>Story type (Historical, Cultural, etc.) + Number of scenes (3-8)</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Generate & Download</h4>
+                        <p>AI creates complete story + videos automatically. Download all with one click!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pricing">
+                <h3>💵 Transparent Pricing</h3>
+                <div class="price-grid">
+                    <div class="price-item">
+                        <strong>3 Scenes</strong>
+                        <p>$0.30-0.90<br>~2 minutes</p>
+                    </div>
+                    <div class="price-item">
+                        <strong>5 Scenes</strong>
+                        <p>$0.50-1.50<br>~3 minutes</p>
+                    </div>
+                    <div class="price-item">
+                        <strong>8 Scenes</strong>
+                        <p>$0.80-2.40<br>~5 minutes</p>
+                    </div>
+                    <div class="price-item">
+                        <strong>Manual Mode</strong>
+                        <p>FREE!<br>Use Google Flow</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="color: #333; margin: 40px 0 20px 0; text-align: center;">🚀 Get Started Now</h3>
+            
+            <div class="cta-section">
+                <a href="index.html" class="cta-btn">
+                    🎬 Launch App
+                </a>
+                <a href="demo.html" class="cta-btn secondary">
+                    📖 View Demo
+                </a>
+            </div>
+            
+            <div style="background: #fff3cd; padding: 20px; border-radius: 12px; margin: 30px 0;">
+                <h4 style="color: #856404; margin-bottom: 10px;">💡 Quick Test (2 minutes):</h4>
+                <ol style="color: #856404; margin-left: 20px; line-height: 1.8;">
+                    <li>Get Groq key: <a href="https://console.groq.com" target="_blank">console.groq.com</a></li>
+                    <li>Get FAL.ai key: <a href="https://fal.ai/dashboard" target="_blank">fal.ai/dashboard</a></li>
+                    <li>Open app, paste keys</li>
+                    <li>Type: "اکبر اور بیربل" (Akbar and Birbal)</li>
+                    <li>Select: 3 scenes, Historical</li>
+                    <li>Click: Generate Story & Video</li>
+                    <li>Wait: ~2 minutes</li>
+                    <li>Download: Your 3 videos! 🎉</li>
+                </ol>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <h3 style="color: #333; margin-bottom: 20px;">📚 Documentation</h3>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="README.md" style="color: #667eea; text-decoration: none; font-weight: 600;">📄 README</a>
+                    <a href="SETUP_GUIDE.txt" style="color: #667eea; text-decoration: none; font-weight: 600;">📖 Setup Guide</a>
+                    <a href="QUICK_REFERENCE.md" style="color: #667eea; text-decoration: none; font-weight: 600;">⚡ Quick Reference</a>
+                    <a href="FREE_API_KEYS.md" style="color: #667eea; text-decoration: none; font-weight: 600;">🔑 API Keys</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🎬 AI Video Generator | Production Ready ✅</p>
+            <p>No Backend • 100% Browser • Open Source • MIT License</p>
+            <p style="margin-top: 10px;">Built with ❤️ for Urdu content creators</p>
+        </div>
+    </div>
+</body>
+</html>

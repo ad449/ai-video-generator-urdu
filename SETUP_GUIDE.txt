@@ -1,0 +1,125 @@
+🎬 AI VIDEO GENERATOR - SETUP GUIDE
+===================================
+
+This tool automatically generates Urdu historical story videos using free AI APIs.
+
+📋 QUICK START (5 minutes):
+---------------------------
+
+1. GET FREE API KEYS:
+
+   A) GROQ API (Required - Story Generation)
+      - Go to: https://console.groq.com
+      - Sign up (free)
+      - Create API key
+      - Copy key
+      - 14,400 FREE requests/day
+
+   B) FAL.AI API (Required - Video Generation)
+      - Go to: https://fal.ai/dashboard
+      - Sign up (free)
+      - Get API key
+      - Copy key
+      - $5 FREE credits on signup (generates ~10-20 videos)
+
+   C) REPLICATE API (Optional - Backup)
+      - Go to: https://replicate.com/account/api-tokens
+      - Sign up (free)
+      - Create token
+      - Copy token
+      - Try free models collection
+
+2. OPEN THE APP:
+   - Open index.html in Chrome/Firefox/Edge
+   - Paste API keys in settings
+   - Keys auto-save in browser
+
+3. GENERATE VIDEOS:
+   - Enter story idea in Urdu or English
+   - Select story type and scene count (3-8 scenes)
+   - Click "Generate Story & Video"
+   - Wait ~30 seconds per scene
+   - Download videos when ready
+
+
+🎯 FEATURES:
+-----------
+✅ Urdu language specialized
+✅ Historical, Cultural, Fantasy, Educational stories
+✅ 3-8 scenes per story (you choose)
+✅ Automatic video generation
+✅ Download individual or all videos
+✅ Retry failed videos
+✅ Copy prompts for manual use
+
+
+💰 COST BREAKDOWN:
+-----------------
+- Groq Story Generation: FREE (14,400 requests/day)
+- FAL.ai Video Generation: $5 free credits = ~10-20 videos
+- After free credits: ~$0.10-0.30 per video
+- Total for 10 stories (50 scenes): ~$5-15
+
+
+⚡ OPTIMIZATION TIPS:
+-------------------
+1. Use 3-5 scenes instead of 8 (saves credits)
+2. Generate stories in batch, videos later
+3. Use manual mode to copy prompts for Google Flow (50 free daily)
+4. FAL.ai is fastest (~30 sec/video)
+5. Replicate has some free models
+
+
+🔧 TROUBLESHOOTING:
+------------------
+Q: Video generation failed?
+A: Click "Retry Generation" or check API key
+
+Q: Out of credits?
+A: Switch to "Manual" mode and use Google Flow (50 free daily)
+
+Q: Video quality low?
+A: FAL.ai generates 768x512. For higher quality, use Replicate premium models
+
+Q: Can't download video?
+A: Right-click video player → Save As
+
+
+📂 FILES:
+--------
+- index.html: Main app (open this)
+- style.css: Styling
+- script.js: Logic and API calls
+- FREE_API_KEYS.md: Detailed API information
+
+
+🌟 EXAMPLE USAGE:
+----------------
+Input: "میر تقی میر کی زندگی کے بارے میں ایک کہانی"
+       (A story about Mir Taqi Mir's life)
+
+Output: 
+- Complete Urdu story (5 scenes)
+- 5 professional videos (~5 seconds each)
+- Total time: ~3-5 minutes
+- Total cost: $0.50-1.50 (after free credits)
+
+
+🚀 PRODUCTION READY:
+-------------------
+✅ No backend needed
+✅ Runs 100% in browser
+✅ API keys stored locally (secure)
+✅ Works offline after loading
+✅ Mobile responsive
+✅ Error handling & retry logic
+
+
+📞 API SUPPORT:
+--------------
+- Groq: https://console.groq.com/docs
+- FAL.ai: https://fal.ai/docs
+- Replicate: https://replicate.com/docs
+
+
+Happy creating! 🎥✨

@@ -1,0 +1,25 @@
+# API Keys - NEVER commit these!
+apikey
+*.key
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# Build outputs
+.vercel/
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator - اردو</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 AI Video Generator</h1>
+            <p>تاریخی کہانیاں اردو میں - ویڈیو میں تبدیل کریں</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="card">
+                <h2>📝 اپنی کہانی لکھیں</h2>
+                <textarea id="userInput" placeholder="مثال: میر تقی میر کی زندگی کے بارے میں ایک کہانی بنائیں..." rows="4"></textarea>
+                
+                <div class="settings">
+                    <div class="setting-item">
+                        <label>Story Type:</label>
+                        <select id="storyType">
+                            <option value="historical">تاریخی کہانی</option>
+                            <option value="cultural">ثقافتی کہانی</option>
+                            <option value="fantasy">فنتاسی</option>
+                            <option value="educational">تعلیمی</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Scenes:</label>
+                        <select id="sceneCount">
+                            <option value="3">3 scenes (fast)</option>
+                            <option value="5" selected>5 scenes</option>
+                            <option value="8">8 scenes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="btn-primary">🚀 Generate Story & Video</button>
+            </div>
+
+            <!-- API Keys Section -->
+            <div class="card">
+                <h2>🔑 API Settings</h2>
+                <div class="api-inputs">
+                    <input type="text" id="groqKey" placeholder="Groq API Key (for story generation - REQUIRED)">
+                    <input type="text" id="huggingfaceKey" placeholder="Hugging Face Token (for FREE video generation)">
+                    <input type="text" id="falKey" placeholder="FAL.ai API Key (optional - if have credits)">
+                    <input type="text" id="replicateKey" placeholder="Replicate API Key (optional backup)">
+                </div>
+                <div class="setting-item" style="margin-top: 15px;">
+                    <label>Video Generator:</label>
+                    <select id="videoProvider">
+                        <option value="auto">🤖 Auto (Smart Failover)</option>
+                        <option value="huggingface-cogvideo">CogVideoX-5B (Best Quality)</option>
+                        <option value="huggingface-wan">Wan2.2 (Fastest)</option>
+                        <option value="huggingface-hunyuan">HunyuanVideo (High Quality)</option>
+                        <option value="huggingface-ltx">LTX-Video (Fast)</option>
+                        <option value="fal-ltx">FAL.ai (Paid - Reliable)</option>
+                        <option value="replicate-happyhorse">HappyHorse (Paid - Quality)</option>
+                        <option value="manual">Manual (Copy prompts only)</option>
+                    </select>
+                </div>
+                <p class="hint">💡 <strong>Auto mode tries multiple providers automatically!</strong> Starts with free, falls back to paid if needed.</p>
+            </div>
+
+            <!-- Progress Section -->
+            <div id="progressSection" class="card hidden">
+                <h2>⚙️ Processing...</h2>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="progressText">Initializing...</p>
+            </div>
+
+            <!-- Story Output -->
+            <div id="storySection" class="card hidden">
+                <h2>📖 Generated Story</h2>
+                <div id="storyOutput" class="story-content"></div>
+                <button id="editStoryBtn" class="btn-secondary">✏️ Edit Story</button>
+                <button id="continueToVideoBtn" class="btn-primary">🎥 Generate Videos</button>
+            </div>
+
+            <!-- Scenes Section -->
+            <div id="scenesSection" class="card hidden">
+                <h2>🎬 Video Scenes</h2>
+                <div id="scenesContainer"></div>
+                <button id="generateVideosBtn" class="btn-primary">🎥 Generate All Videos Now</button>
+            </div>
+
+            <!-- Video Results -->
+            <div id="videoSection" class="card hidden">
+                <h2>✅ Generated Videos</h2>
+                <div id="videoStats"></div>
+                <div id="videoContainer"></div>
+                <button id="downloadAllBtn" class="btn-primary">📥 Download All Videos</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Powered by Free AI APIs | Groq + Google Flow</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
