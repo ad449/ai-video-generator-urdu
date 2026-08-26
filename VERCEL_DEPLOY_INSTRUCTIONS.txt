@@ -1,0 +1,101 @@
+🚀 QUICK VERCEL DEPLOYMENT GUIDE
+================================
+
+✅ Code pushed to GitHub: https://github.com/ad449/ai-video-generator-urdu
+
+📦 DEPLOYMENT STEPS:
+
+1. Go to Vercel Dashboard:
+   👉 https://vercel.com/new
+
+2. Import GitHub Repository:
+   - Click "Import Project"
+   - Select: ad449/ai-video-generator-urdu
+   - Click "Import"
+
+3. Configure Project:
+   - Framework Preset: Other
+   - Root Directory: ./
+   - Build Command: (leave empty)
+   - Output Directory: (leave empty)
+   
+4. Add Environment Variables (IMPORTANT!):
+   
+   Variable Name: GROQ_API_KEY
+   Value: <REDACTED_API_KEY>
+   
+   Variable Name: HUGGINGFACE_TOKEN
+   Value: <REDACTED_API_KEY>
+
+5. Click "Deploy"
+
+6. Wait 1-2 minutes for deployment to complete
+
+7. Your app will be live at:
+   https://ai-video-generator-urdu.vercel.app
+   (or similar URL)
+
+🔐 SECURITY FEATURES:
+- ✅ API keys stored securely on Vercel
+- ✅ Never exposed to client-side
+- ✅ Serverless functions proxy all API calls
+- ✅ .gitignore prevents accidental commits
+
+📱 TESTING YOUR DEPLOYMENT:
+
+1. Open the Vercel URL
+2. Verify API key fields show "loaded from server"
+3. Type a story idea in Urdu
+4. Click "Generate Story & Video"
+5. Watch auto-failover in action!
+
+🔄 AUTOMATIC UPDATES:
+
+Every time you push to GitHub, Vercel will automatically:
+- Pull latest code
+- Rebuild app
+- Deploy to production
+- Keep environment variables secure
+
+📊 MONITOR YOUR APP:
+
+Vercel Dashboard → Your Project:
+- Analytics: View traffic and usage
+- Logs: Debug any issues
+- Settings: Manage environment variables
+
+💡 CUSTOM DOMAIN (Optional):
+
+1. Go to Settings → Domains
+2. Add your domain (e.g., videos.yourdomain.com)
+3. Update DNS records as shown
+4. SSL certificate automatically provisioned
+
+🆘 TROUBLESHOOTING:
+
+If deployment fails:
+- Check environment variables are set correctly
+- View deployment logs in Vercel
+- Ensure all files are committed to GitHub
+
+If app doesn't work:
+- Check browser console for errors
+- Verify API keys in Vercel environment variables
+- Test API endpoints: /api/config, /api/groq
+
+📞 NEED HELP?
+
+- GitHub Repo: https://github.com/ad449/ai-video-generator-urdu
+- Vercel Docs: https://vercel.com/docs
+- Vercel Support: https://vercel.com/support
+
+🎉 CONGRATULATIONS!
+
+Your AI Video Generator is now:
+- ✅ Deployed to production
+- ✅ Secure with hidden API keys
+- ✅ Auto-updating from GitHub
+- ✅ Accessible worldwide
+- ✅ Free hosting on Vercel
+
+Share your Vercel URL and start generating amazing Urdu videos! 🎬

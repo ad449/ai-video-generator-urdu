@@ -1,0 +1,31 @@
+{
+  "name": "ai-video-generator-urdu",
+  "version": "1.0.0",
+  "description": "Transform text into engaging Urdu historical video stories using AI with automatic failover across multiple providers",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "ai",
+    "video-generation",
+    "urdu",
+    "groq",
+    "huggingface",
+    "vercel",
+    "serverless",
+    "text-to-video",
+    "historical-stories"
+  ],
+  "author": "ad449",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ad449/ai-video-generator-urdu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ad449/ai-video-generator-urdu/issues"
+  },
+  "homepage": "https://github.com/ad449/ai-video-generator-urdu#readme"
+}
