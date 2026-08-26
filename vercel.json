@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "*.html",
       "use": "@vercel/static"
     },
@@ -12,10 +16,6 @@
     {
       "src": "*.js",
       "use": "@vercel/static"
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -29,7 +29,7 @@
     }
   ],
   "env": {
-    "GROQ_API_KEY": "@groq-api-key",
-    "HUGGINGFACE_TOKEN": "@huggingface-token"
+    "GROQ_API_KEY": "@groq_api_key",
+    "HUGGINGFACE_TOKEN": "@huggingface_token"
   }
 }

@@ -1,128 +1,192 @@
 # 🚀 Deployment Guide - AI Video Generator
 
-## Prerequisites
-- GitHub account (private repo)
-- Vercel account (free)
-- API Keys ready
+## Step-by-Step Vercel Deployment
 
-## Step 1: Push to GitHub Private Repo
+### 1️⃣ Prepare Repository
 
 ```bash
-# Already initialized git
-git add .
-git commit -m "Initial commit - AI Video Generator"
+# Initialize git (if not already done)
+git init
 
-# Create private repo on GitHub, then:
+# Add all files
+git add .
+
+# Commit
+git commit -m "Initial commit: AI Video Generator with auto-failover"
+
+# Create GitHub repo and push
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 git branch -M main
 git push -u origin main
 ```
 
-## Step 2: Deploy to Vercel
+### 2️⃣ Deploy to Vercel
 
-### Option A: Using Vercel CLI (Recommended)
+#### Method A: Vercel Dashboard (Easiest)
 
-1. **Install Vercel CLI:**
+1. Go to [vercel.com](https://vercel.com)
+2. Click "New Project"
+3. Import your GitHub repository
+4. Configure project:
+   - Framework Preset: **Other**
+   - Build Command: (leave empty)
+   - Output Directory: (leave empty)
+   - Install Command: (leave empty)
+
+5. Add Environment Variables:
+   ```
+   GROQ_API_KEY=<REDACTED_API_KEY>
+   HUGGINGFACE_TOKEN=<REDACTED_API_KEY>
+   ```
+
+6. Click "Deploy"
+
+#### Method B: Vercel CLI
+
 ```bash
-npm install -g vercel
-```
+# Install Vercel CLI
+npm i -g vercel
 
-2. **Login to Vercel:**
-```bash
+# Login
 vercel login
-```
 
-3. **Deploy:**
-```bash
+# Deploy
 vercel
+
+# Add secrets
+vercel env add GROQ_API_KEY production
+# Paste: <REDACTED_API_KEY>
+
+vercel env add HUGGINGFACE_TOKEN production
+# Paste: <REDACTED_API_KEY>
+
+# Deploy to production
+vercel --prod
 ```
 
-4. **Set Environment Variables:**
+### 3️⃣ Verify Deployment
+
+1. Open your Vercel URL (e.g., `your-app.vercel.app`)
+2. Check if API key fields show "loaded from server"
+3. Test story generation
+4. Test video generation with auto-failover
+
+### 4️⃣ Custom Domain (Optional)
+
+1. Go to Vercel Dashboard → Your Project → Settings → Domains
+2. Add your custom domain
+3. Update DNS records as instructed
+4. Wait for SSL certificate (automatic)
+
+## 🔐 Security Checklist
+
+- ✅ API keys in environment variables
+- ✅ `.gitignore` includes `apikey`, `.env*`
+- ✅ Never commit sensitive data
+- ✅ Use serverless functions for API calls
+- ✅ CORS properly configured
+
+## 🐛 Troubleshooting
+
+### API Keys Not Working
+
+**Problem**: "API key not configured on server"
+
+**Solution**:
 ```bash
-vercel env add GROQ_API_KEY
-# Paste: <REDACTED_API_KEY>
+# Check environment variables
+vercel env ls
 
-vercel env add HUGGINGFACE_TOKEN
-# Paste: <REDACTED_API_KEY>
+# Re-add if missing
+vercel env add GROQ_API_KEY production
+vercel env add HUGGINGFACE_TOKEN production
+
+# Redeploy
+vercel --prod
 ```
 
-5. **Deploy to Production:**
+### Serverless Function Timeout
+
+**Problem**: Video generation takes too long
+
+**Solution**: Vercel serverless functions have 10s timeout on Hobby plan. Upgrade to Pro for 60s timeout, or use direct client-side calls for video generation.
+
+### CORS Errors
+
+**Problem**: API requests blocked by CORS
+
+**Solution**: Check `api/*.js` files have proper CORS headers:
+```javascript
+res.setHeader('Access-Control-Allow-Origin', '*');
+```
+
+## 📊 Monitoring
+
+### Check Logs
+```bash
+vercel logs YOUR_DEPLOYMENT_URL
+```
+
+### View Analytics
+- Go to Vercel Dashboard → Your Project → Analytics
+- Monitor request counts, errors, and response times
+
+## 🔄 Updates & Redeployment
+
+### Automatic (Recommended)
+```bash
+# Push to GitHub - auto deploys
+git add .
+git commit -m "Update features"
+git push
+```
+
+### Manual
 ```bash
 vercel --prod
 ```
 
-### Option B: Using Vercel Dashboard
+## 💰 Cost Estimation
 
-1. Go to https://vercel.com/new
-2. Import your GitHub repository
-3. Configure project:
-   - Framework Preset: **Other**
-   - Root Directory: `./`
-   - Build Command: (leave empty)
-   - Output Directory: (leave empty)
+### Vercel (Free Tier)
+- 100GB bandwidth/month
+- Unlimited serverless function invocations
+- 100 hours serverless execution time
+- **Cost: FREE for most use cases**
 
-4. **Add Environment Variables:**
-   - Go to Settings → Environment Variables
-   - Add `GROQ_API_KEY` = `<REDACTED_API_KEY>`
-   - Add `HUGGINGFACE_TOKEN` = `<REDACTED_API_KEY>`
-   - Environment: **Production, Preview, Development** (all three)
+### API Services (Free Tier)
+- **Groq**: Generous free tier
+- **Hugging Face**: Free inference API (rate limited)
+- **Total: $0/month** for moderate use
 
-5. Click **Deploy**
+### Upgrade Costs (If Needed)
+- **Vercel Pro**: $20/month (60s function timeout)
+- **FAL.ai**: Pay-as-you-go (starts at $5)
+- **Replicate**: Pay-as-you-go
 
-## Step 3: Verify Deployment
+## 🎯 Performance Optimization
 
-1. Visit your Vercel URL (e.g., `your-app.vercel.app`)
-2. Open browser console (F12)
-3. You should see: `✅ API keys loaded from server`
-4. Test video generation
+1. **Enable Caching**:
+   ```javascript
+   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+   ```
 
-## 🔐 Security Features
+2. **Optimize Video Delivery**:
+   - Use CDN for video hosting
+   - Implement lazy loading
+   - Add video compression
 
-✅ API keys are stored as Vercel environment variables
-✅ Keys are NOT in your code or GitHub repo
-✅ Serverless function `/api/get-api-keys` securely provides keys
-✅ `.gitignore` prevents accidental key commits
-✅ Users can still add their own keys via UI (localStorage)
+3. **Monitor Usage**:
+   - Track API call counts
+   - Monitor response times
+   - Set up alerts for errors
 
-## 📱 Features
+## 📞 Support Resources
 
-- ✅ Auto-failover between 6 video providers
-- ✅ Free Hugging Face models (CogVideoX, Wan2.2, HunyuanVideo, LTX)
-- ✅ Paid backups (FAL.ai, Replicate)
-- ✅ Urdu language specialization
-- ✅ Mobile responsive
-- ✅ Progress tracking
-- ✅ Provider statistics
+- **Vercel Docs**: [vercel.com/docs](https://vercel.com/docs)
+- **Vercel Discord**: [vercel.com/discord](https://vercel.com/discord)
+- **GitHub Issues**: Create issue in your repo
 
-## 🔧 Troubleshooting
+---
 
-**Keys not loading?**
-- Check Vercel dashboard → Settings → Environment Variables
-- Ensure all three environments are selected
-- Redeploy after adding variables
-
-**API errors?**
-- Check browser console for detailed errors
-- Verify API key formats are correct
-- Try regenerating keys from provider dashboards
-
-**Local development:**
-- Create `.env.local` file:
-```
-GROQ_API_KEY=your_key_here
-HUGGINGFACE_TOKEN=your_token_here
-```
-- Run: `vercel dev`
-
-## 📊 Provider Priority Order
-
-1. CogVideoX-5B (HuggingFace) - Free, High Quality
-2. Wan2.2-5B (HuggingFace) - Free, Fast
-3. HunyuanVideo (HuggingFace) - Free, High Quality
-4. LTX-Video (HuggingFace) - Free, Fast
-5. FAL.ai - Paid, Reliable
-6. Replicate HappyHorse - Paid, Quality
-
-## 🎉 Done!
-
-Your AI Video Generator is now live with secure, hidden API keys!
+Ready to deploy? Follow the steps above and your app will be live in minutes! 🚀

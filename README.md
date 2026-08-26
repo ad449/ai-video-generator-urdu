@@ -1,363 +1,174 @@
 # 🎬 AI Video Generator - Urdu Historical Stories
 
-**Production-ready AI video generator that creates complete Urdu historical story videos automatically using free APIs.**
+Transform text into engaging Urdu historical video stories using AI. Features automatic failover across multiple free and paid video generation providers.
 
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![No Backend](https://img.shields.io/badge/Backend-Not%20Required-orange)
+## ✨ Features
 
----
+- 📝 **AI Story Generation** - Generate complete Urdu stories using Groq AI
+- 🎥 **Multi-Provider Video Generation** - Automatic failover across 6+ providers
+- 🆓 **Free Options First** - Prioritizes free Hugging Face models
+- 🔄 **Smart Auto-Failover** - Automatically tries next provider if one fails
+- 📊 **Performance Tracking** - Tracks provider success/failure rates
+- 🌐 **RTL Support** - Full Urdu (اردو) language support
+- 🔐 **Secure Deployment** - API keys hidden on server side
 
-## ⚡ Quick Start (5 Minutes)
+## 🚀 Quick Start
 
-### 1️⃣ Get Free API Keys
-- **Groq**: [console.groq.com](https://console.groq.com) → 14,400 free requests/day
-- **FAL.ai**: [fal.ai/dashboard](https://fal.ai/dashboard) → $5 free credits = ~10-20 videos
+### Local Development
 
-### 2️⃣ Launch App
+1. Clone the repository:
 ```bash
-# Just open in browser - no installation needed!
-open index.html
-# or
-open demo.html  # for guided demo
+git clone <your-repo-url>
+cd ai-video-generator
 ```
 
-### 3️⃣ Create Your First Video
-1. Paste API keys in app
-2. Enter: "میر تقی میر کی زندگی" (Mir Taqi Mir's life)
-3. Select: 3 scenes, Historical Story
-4. Click: Generate Story & Video
-5. Wait: ~2 minutes
-6. Download: Your videos!
-
----
-
-## 🎯 Features
-
-### ✅ **Fully Automated**
-- Generates complete Urdu stories from prompts
-- Converts stories to video prompts automatically
-- Creates professional videos (no manual work)
-- Downloads all videos with one click
-
-### 🌍 **Urdu Language Specialized**
-- Native Urdu story generation
-- RTL (right-to-left) text display
-- Cultural & historical accuracy
-- English input supported too
-
-### 💰 **Cost-Effective**
-- Story generation: **FREE** (Groq)
-- Video generation: **$5 free credits** (FAL.ai)
-- After free credits: ~$0.10-0.30 per video
-- Manual mode: **FREE** (Google Flow)
-
-### ⚡ **Fast & Efficient**
-- 3 scenes: ~2 minutes total
-- 5 scenes: ~3 minutes total
-- 8 scenes: ~5 minutes total
-- Real-time progress tracking
-
-### 🎨 **Story Types**
-- تاریخی کہانی (Historical)
-- ثقافتی کہانی (Cultural)
-- فنتاسی (Fantasy)
-- تعلیمی (Educational)
-
----
-
-## 📊 What You Get
-
-### Input
-```
-میر تقی میر کی شاعری کے بارے میں ایک تاریخی کہانی
-(A historical story about Mir Taqi Mir's poetry)
+2. Create `.env.local` file:
+```bash
+cp .env.example .env.local
 ```
 
-### Output
-- ✅ Complete Urdu story (5 scenes)
-- ✅ 5 professional videos (~5 seconds each)
-- ✅ 768x512 resolution, 24fps, MP4 format
-- ✅ Downloadable individually or batch
-- ✅ Total time: ~3 minutes
-- ✅ Total cost: $0.50-1.50 (after free credits)
+3. Add your API keys to `.env.local`:
+```env
+GROQ_API_KEY=your_groq_api_key
+HUGGINGFACE_TOKEN=your_huggingface_token
+```
 
----
+4. Start local server:
+```bash
+python3 -m http.server 3000
+```
 
-## 🛠️ Technical Stack
+5. Open: `http://localhost:3000`
 
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Frontend** | HTML5, CSS3, JavaScript | No framework needed |
-| **Story Generation** | Groq API (Llama 3.3) | Free, ultra-fast |
-| **Video Generation** | FAL.ai (LTX Video) | Fast, high-quality |
-| **Backup Provider** | Replicate | Alternative option |
-| **Storage** | LocalStorage | API keys saved locally |
-| **Backend** | None | 100% client-side |
+### Deploy to Vercel
 
----
+#### Option 1: Using Vercel CLI
 
-## 📂 Project Structure
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Add environment variables
+vercel env add GROQ_API_KEY
+vercel env add HUGGINGFACE_TOKEN
+
+# Deploy to production
+vercel --prod
+```
+
+#### Option 2: Using Vercel Dashboard
+
+1. Push code to GitHub
+2. Import project on [vercel.com](https://vercel.com)
+3. Add environment variables:
+   - `GROQ_API_KEY` - Your Groq API key
+   - `HUGGINGFACE_TOKEN` - Your Hugging Face token
+4. Deploy
+
+## 🔑 Getting API Keys
+
+### Required (Free)
+
+- **Groq API** - [Get free key](https://console.groq.com/keys)
+  - Used for story generation
+  - Very generous free tier
+  
+- **Hugging Face** - [Get free token](https://huggingface.co/settings/tokens)
+  - Used for video generation
+  - Multiple free models available
+
+### Optional (Paid)
+
+- **FAL.ai** - [Get $5 free credits](https://fal.ai/dashboard)
+- **Replicate** - [Get free tokens](https://replicate.com/account/api-tokens)
+
+## 🎯 Video Providers (Priority Order)
+
+1. **CogVideoX-5B** (Hugging Face) - Best quality, FREE
+2. **Wan2.2-5B** (Hugging Face) - Fastest, FREE
+3. **HunyuanVideo** (Tencent) - High quality, FREE
+4. **LTX-Video** (Lightricks) - Fast, FREE
+5. **FAL LTX-Video** - Reliable, PAID
+6. **HappyHorse-1.0** - Quality, PAID
+
+## 🔐 Security Features
+
+- API keys stored as environment variables on Vercel
+- Never exposed to client-side code
+- Serverless functions proxy all API requests
+- `.gitignore` prevents accidental key commits
+
+## 📁 Project Structure
 
 ```
 ├── index.html              # Main application
-├── demo.html               # Demo guide
-├── style.css               # Styling
-├── script.js               # Core logic + API integration
-├── FREE_API_KEYS.md        # Detailed API documentation
-├── SETUP_GUIDE.txt         # Step-by-step setup
-├── QUICK_REFERENCE.md      # Quick reference card
-└── README.md               # This file
+├── style.css              # Styles
+├── script.js              # Client-side logic (local)
+├── script-vercel.js       # Vercel version with proxies
+├── api/                   # Serverless functions
+│   ├── config.js         # Get server config
+│   ├── groq.js           # Groq API proxy
+│   └── huggingface.js    # Hugging Face proxy
+├── vercel.json           # Vercel configuration
+├── .env.example          # Environment template
+└── .gitignore            # Git ignore rules
 ```
 
----
+## 🛠️ Tech Stack
 
-## 🎬 Video Providers
+- **Frontend**: Vanilla JavaScript, HTML5, CSS3
+- **APIs**: Groq, Hugging Face, FAL.ai, Replicate
+- **Deployment**: Vercel Serverless Functions
+- **Language**: Urdu (اردو) with RTL support
 
-### 1. **FAL.ai** (Recommended)
-- ✅ Fastest (~30 seconds per video)
-- ✅ Best quality (768x512, 24fps)
-- ✅ $5 free credits on signup
-- ✅ Cost: ~$0.10-0.30 per video
-- 🔗 [fal.ai/dashboard](https://fal.ai/dashboard)
+## 📱 Mobile Support
 
-### 2. **Replicate** (Backup)
-- ✅ Multiple model options
-- ✅ Free models collection available
-- ✅ Pay-per-use pricing
-- ✅ Cost: ~$0.10-0.50 per video
-- 🔗 [replicate.com](https://replicate.com/account/api-tokens)
-
-### 3. **Manual Mode** (Zero Cost)
-- ✅ Copy prompts from app
-- ✅ Paste into Google Flow
-- ✅ 50 free videos daily
-- ✅ Best quality (up to 4K)
-- 🔗 [flow.google.com](https://flow.google.com)
-
----
-
-## 💡 Usage Examples
-
-### Example 1: Historical Story
-```javascript
-Input: "اکبر اور بیربل کی دلچسپ کہانی"
-Type: Historical Story
-Scenes: 5
-Time: ~3 minutes
-Cost: ~$0.50-1.50
-```
-
-### Example 2: Cultural Story
-```javascript
-Input: "لاہور کی ثقافت اور کھانے"
-Type: Cultural Story  
-Scenes: 3
-Time: ~2 minutes
-Cost: ~$0.30-0.90
-```
-
-### Example 3: Educational
-```javascript
-Input: "Indus Valley civilization history"
-Type: Educational
-Scenes: 8
-Time: ~5 minutes
-Cost: ~$0.80-2.40
-```
-
----
-
-## 🔧 Configuration
-
-### API Keys (Required)
-```javascript
-Groq API Key:      // From console.groq.com
-FAL.ai API Key:    // From fal.ai/dashboard
-Replicate Key:     // Optional, from replicate.com
-```
-
-### Settings (Optional)
-```javascript
-Story Type:        Historical, Cultural, Fantasy, Educational
-Scene Count:       3, 5, or 8 scenes
-Video Provider:    FAL.ai, Replicate, or Manual
-```
-
----
-
-## 📈 Performance Benchmarks
-
-| Metric | Value |
-|--------|-------|
-| **Story Generation** | ~3-5 seconds |
-| **Video per Scene** | ~30 seconds (FAL.ai) |
-| **Total (3 scenes)** | ~2 minutes |
-| **Total (5 scenes)** | ~3 minutes |
-| **Total (8 scenes)** | ~5 minutes |
-| **Success Rate** | ~95% |
-| **Retry Capability** | ✅ Yes |
-
----
-
-## 🌟 Use Cases
-
-### Content Creators
-- Quick Urdu content for social media
-- Educational videos for YouTube
-- Historical storytelling for TikTok
-
-### Educators
-- Teaching history in Urdu
-- Cultural education materials
-- Interactive learning content
-
-### Marketers
-- Cultural marketing campaigns
-- Urdu brand storytelling
-- Heritage-focused content
-
-### Developers
-- Prototype video generation apps
-- Test AI video APIs
-- Build custom solutions
-
----
-
-## 🔒 Security & Privacy
-
-- ✅ API keys stored locally in browser
-- ✅ No data sent to third-party servers (except APIs)
-- ✅ No backend = no database = no data breaches
-- ✅ Clear localStorage anytime to remove keys
-- ✅ Open source = fully auditable
-
----
-
-## 🐛 Troubleshooting
-
-### Video Generation Failed?
-1. Check API key validity
-2. Verify sufficient credits
-3. Click "Retry Generation"
-4. Try different provider
-
-### Out of Credits?
-1. Switch to "Manual" mode
-2. Copy prompts
-3. Use Google Flow (50 free daily)
-
-### Story Quality Issues?
-1. Be more specific in input
-2. Add details: time, place, characters
-3. Try different story type
-
----
-
-## 📚 Documentation
-
-- **Quick Start**: [SETUP_GUIDE.txt](SETUP_GUIDE.txt)
-- **API Details**: [FREE_API_KEYS.md](FREE_API_KEYS.md)
-- **Quick Ref**: [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-- **Demo Guide**: [demo.html](demo.html)
-
----
-
-## 🚀 Deployment
-
-### Local Use
-```bash
-# Just open in browser
-open index.html
-```
-
-### Web Hosting
-```bash
-# Upload to any static hosting
-# GitHub Pages, Netlify, Vercel, etc.
-# No server-side code needed!
-```
-
-### CDN
-```bash
-# Host on CDN for global access
-# CloudFlare Pages, AWS S3, etc.
-```
-
----
-
-## 🎯 Roadmap
-
-- [x] Urdu story generation
-- [x] Automatic video generation
-- [x] FAL.ai integration
-- [x] Replicate integration
-- [x] Download videos
-- [x] Retry failed videos
-- [ ] Image-to-video option
-- [ ] Audio narration (Urdu)
-- [ ] Subtitle generation
-- [ ] Video editing tools
-- [ ] Custom video styles
-
----
+Fully responsive design works on:
+- 📱 Android
+- 🍎 iOS
+- 💻 Desktop
+- 📲 Tablets
 
 ## 🤝 Contributing
 
-This is a production-ready tool. Feel free to:
-- Fork and customize
-- Add more video providers
-- Improve Urdu language support
-- Add new story types
-- Create better prompts
-
----
+Contributions welcome! Please:
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Open Pull Request
 
 ## 📄 License
 
-MIT License - Use freely, commercially or personally.
+MIT License - Feel free to use for personal or commercial projects
+
+## 🆘 Support
+
+Having issues? 
+- Check [Issues](../../issues) page
+- Review API key configuration
+- Verify environment variables on Vercel
+
+## 🎓 How It Works
+
+1. **User Input** → Type story idea in Urdu
+2. **Story Generation** → Groq AI generates complete story
+3. **Scene Extraction** → Parses story into video scenes
+4. **Video Generation** → Auto-failover tries providers until success
+5. **Display Results** → Shows generated videos with download options
+
+## 🌟 Features Roadmap
+
+- [ ] More video models integration
+- [ ] Voice narration in Urdu
+- [ ] Background music
+- [ ] Video editing capabilities
+- [ ] Social media export
+- [ ] Story templates
 
 ---
 
-## 💬 Support
-
-### Free APIs:
-- Groq: [console.groq.com/docs](https://console.groq.com/docs)
-- FAL.ai: [fal.ai/docs](https://fal.ai/docs)
-- Replicate: [replicate.com/docs](https://replicate.com/docs)
-
----
-
-## 🎉 Success Stories
-
-### Example Production Outputs:
-
-**3-Scene Story** (~2 min generation):
-- Topic: Mir Taqi Mir's Poetry
-- Videos: 3 x 5-second clips
-- Quality: 768x512, Professional
-- Cost: $0.30-0.90
-
-**5-Scene Story** (~3 min generation):
-- Topic: Mughal Architecture
-- Videos: 5 x 5-second clips
-- Quality: 768x512, Professional
-- Cost: $0.50-1.50
-
-**8-Scene Story** (~5 min generation):
-- Topic: Lahore's History
-- Videos: 8 x 5-second clips
-- Quality: 768x512, Professional
-- Cost: $0.80-2.40
-
----
-
-## ⭐ Star This Project
-
-If you find this useful, please star it! ⭐
-
----
-
-**Built with ❤️ for Urdu content creators**
-
-Last Updated: August 23, 2026 | Version: 1.0 Production Ready ✅
+Made with ❤️ for Urdu content creators
