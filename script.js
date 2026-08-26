@@ -65,7 +65,10 @@ const CONFIG = {
     MAX_RETRIES: 3,
     RETRY_DELAY: 2000,
     VIDEO_POLL_INTERVAL: 3000,
-    VIDEO_MAX_WAIT: 300000 // 5 minutes
+    VIDEO_MAX_WAIT: 300000, // 5 minutes
+    FAL_API_URL: 'https://queue.fal.run/fal-ai/ltx-video',
+    FAL_STATUS_URL: 'https://queue.fal.run/fal-ai/ltx-video/requests/',
+    REPLICATE_API_URL: 'https://api.replicate.com/v1/predictions'
 };
 
 // State
@@ -979,7 +982,7 @@ async function downloadVideo(url, sceneId) {
     }
 }
 
-// Download all videos
+// Download all videos with assembly instructions
 async function downloadAllVideos() {
     const successfulVideos = state.videos.filter(v => v.url);
     
@@ -988,10 +991,8 @@ async function downloadAllVideos() {
         return;
     }
 
-    for (const video of successfulVideos) {
-        await downloadVideo(video.url, video.sceneId);
-        await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between downloads
-    }
+    // Show assembly instructions modal
+    showAssemblyInstructions(successfulVideos);
 }
 
 // Retry failed video
@@ -1062,6 +1063,240 @@ elements.generateVideosBtn.addEventListener('click', generateAllVideos);
 
 // Download all button
 elements.downloadAllBtn.addEventListener('click', downloadAllVideos);
+
+// Show assembly instructions modal
+function showAssemblyInstructions(videos) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+        overflow-y: auto;
+    `;
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 900px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    `;
+    
+    content.innerHTML = `
+        <h2 style="color: #667eea; margin-bottom: 20px;">🎬 Complete Video Assembly Guide</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">📊 Your Project Summary</h3>
+            <p><strong>Total Scenes:</strong> ${videos.length} videos generated</p>
+            <p><strong>Story:</strong> ${state.currentStory ? state.currentStory.substring(0, 80) + '...' : 'Urdu Historical Documentary'}</p>
+            <p><strong>Status:</strong> ✅ Ready for assembly</p>
+        </div>
+
+        <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: #2e7d32;">🚀 Quick Assembly (5 minutes)</h3>
+            <p><strong>Best for beginners - No installation required!</strong></p>
+            <ol style="line-height: 1.8;">
+                <li>Click <strong>"Download All Scenes"</strong> button below</li>
+                <li>Go to <a href="https://www.kapwing.com/studio/editor" target="_blank" style="color: #667eea; font-weight: bold;">Kapwing Studio</a> (free, no signup)</li>
+                <li>Click "Upload" and select all downloaded videos</li>
+                <li>Drag videos to timeline in order</li>
+                <li>Add transitions between clips (optional)</li>
+                <li>Click "Export video" (1080p)</li>
+            </ol>
+            <p style="margin-top: 10px; padding: 10px; background: #fff3e0; border-radius: 5px;">
+                💡 <strong>Tip:</strong> Kapwing is completely free for videos under 10 minutes!
+            </p>
+        </div>
+
+        <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: #1565c0;">💻 Alternative Tools</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd;">
+                    <strong>🎨 Clipchamp</strong><br>
+                    <small>Windows built-in editor</small><br>
+                    <a href="https://clipchamp.com" target="_blank" style="color: #667eea;">clipchamp.com</a>
+                </div>
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd;">
+                    <strong>🎬 iMovie</strong><br>
+                    <small>Mac/iOS free editor</small><br>
+                    <span style="color: #666;">Built-in on Apple devices</span>
+                </div>
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd;">
+                    <strong>📱 InShot</strong><br>
+                    <small>Mobile video editor</small><br>
+                    <a href="https://inshot.com" target="_blank" style="color: #667eea;">inshot.com</a>
+                </div>
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd;">
+                    <strong>🎞️ DaVinci Resolve</strong><br>
+                    <small>Professional (free)</small><br>
+                    <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" style="color: #667eea;">Download</a>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: #e65100;">🐍 Professional Assembly (Python + FFmpeg)</h3>
+            <p><strong>For advanced users - Automatic transitions, subtitles & music!</strong></p>
+            <pre style="background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 13px;">
+# 1. Download all scenes below
+# 2. Create project structure
+mkdir -p output/v2/motion output/v2/audio
+
+# 3. Move downloaded videos to:
+#    output/v2/motion/scene_01.mp4
+#    output/v2/motion/scene_02.mp4
+#    etc...
+
+# 4. Install FFmpeg
+# Mac: brew install ffmpeg
+# Ubuntu: sudo apt install ffmpeg
+# Windows: Download from ffmpeg.org
+
+# 5. Run assembly script
+python3 assemble_flow_style.py
+
+# 📺 Output: output/v2/final_documentary.mp4
+            </pre>
+            <p><strong>✨ Professional Features:</strong></p>
+            <ul style="line-height: 1.6;">
+                <li>✅ Cinematic crossfade transitions (0.6s)</li>
+                <li>✅ Automatic Urdu subtitle overlay</li>
+                <li>✅ Background music mixing</li>
+                <li>✅ Color grading & enhancement</li>
+                <li>✅ Zoom/pan effects on stills</li>
+                <li>✅ Professional export quality</li>
+            </ul>
+        </div>
+
+        <div style="background: #f3e5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: #6a1b9a;">📥 Download Your Scenes</h3>
+            <div id="scene-download-list" style="max-height: 300px; overflow-y: auto;"></div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap;">
+            <button id="closeModalBtn" 
+                    style="background: #666; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                ❌ Close
+            </button>
+            <button id="downloadAllBtn2" 
+                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                📥 Download All Scenes
+            </button>
+        </div>
+    `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    // Add download buttons for each scene
+    const sceneList = document.getElementById('scene-download-list');
+    videos.forEach((video, index) => {
+        const item = document.createElement('div');
+        item.style.cssText = `
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.2s;
+        `;
+        item.onmouseenter = () => item.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+        item.onmouseleave = () => item.style.boxShadow = 'none';
+        
+        const urduPreview = video.urduText.substring(0, 50) + (video.urduText.length > 50 ? '...' : '');
+        const provider = video.provider ? `<span style="color: #666; font-size: 12px;">(${video.provider})</span>` : '';
+        
+        item.innerHTML = `
+            <div>
+                <strong style="color: #667eea;">Scene ${video.sceneId}</strong> ${provider}<br>
+                <small style="color: #666; direction: rtl; display: block; margin-top: 4px;">${urduPreview}</small>
+            </div>
+            <button class="download-scene-btn" data-url="${video.url}" data-id="${video.sceneId}"
+                    style="background: #4caf50; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                ⬇️ Download
+            </button>
+        `;
+        sceneList.appendChild(item);
+    });
+    
+    // Add event listeners
+    document.getElementById('closeModalBtn').onclick = () => modal.remove();
+    document.getElementById('downloadAllBtn2').onclick = () => downloadAllScenesSequential(videos, modal);
+    
+    // Individual download buttons
+    document.querySelectorAll('.download-scene-btn').forEach(btn => {
+        btn.onclick = async function() {
+            const url = this.getAttribute('data-url');
+            const id = parseInt(this.getAttribute('data-id'));
+            this.textContent = '⏳ Downloading...';
+            this.disabled = true;
+            await downloadVideo(url, id);
+            this.textContent = '✅ Downloaded';
+            setTimeout(() => {
+                this.textContent = '⬇️ Download';
+                this.disabled = false;
+            }, 2000);
+        };
+    });
+}
+
+// Download all scenes sequentially
+async function downloadAllScenesSequential(videos, modal) {
+    const btn = document.getElementById('downloadAllBtn2');
+    const originalText = btn.textContent;
+    
+    for (let i = 0; i < videos.length; i++) {
+        const video = videos[i];
+        btn.textContent = `⏳ Downloading ${i + 1}/${videos.length}...`;
+        await downloadVideo(video.url, video.sceneId);
+        
+        // Small delay between downloads
+        if (i < videos.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+    
+    btn.textContent = '✅ All Downloaded!';
+    btn.style.background = '#4caf50';
+    
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }, 3000);
+    
+    // Show success message
+    const successMsg = document.createElement('div');
+    successMsg.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4caf50;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 10001;
+        font-weight: bold;
+    `;
+    successMsg.textContent = `✅ All ${videos.length} scenes downloaded! Now upload them to Kapwing or your video editor.`;
+    document.body.appendChild(successMsg);
+    
+    setTimeout(() => successMsg.remove(), 5000);
+}
 
 // Initialize
 loadApiKeys();
