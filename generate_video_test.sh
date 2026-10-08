@@ -7,9 +7,9 @@ echo "🎬 Starting Automated Video Generation..."
 echo "=========================================="
 echo ""
 
-# API Keys
-GROQ_KEY="<REDACTED_API_KEY>"
-HF_TOKEN="<REDACTED_API_KEY>"
+# API keys must be supplied through the environment; never commit credentials.
+GROQ_KEY="${GROQ_API_KEY:?Set GROQ_API_KEY in your environment}"
+HF_TOKEN="${HUGGINGFACE_TOKEN:?Set HUGGINGFACE_TOKEN in your environment}"
 
 # Create output directory
 mkdir -p output/test_generation

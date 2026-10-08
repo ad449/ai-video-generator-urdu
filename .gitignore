@@ -14,6 +14,8 @@ yarn-error.log*
 .vercel
 dist/
 build/
+output/
+.venv/
 
 # OS files
 .DS_Store

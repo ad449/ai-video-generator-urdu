@@ -40,8 +40,8 @@
 2. **Import**: `ad449/ai-video-generator-urdu`
 3. **Add Environment Variables**:
    ```
-   GROQ_API_KEY=<REDACTED_API_KEY>
-   HUGGINGFACE_TOKEN=<REDACTED_API_KEY>
+   GROQ_API_KEY=<your Groq API key>
+   HUGGINGFACE_TOKEN=<your Hugging Face token>
    ```
 4. **Click Deploy**
 5. **Done!** Your app will be live at: `https://your-project.vercel.app`
@@ -60,10 +60,10 @@ vercel
 
 # Add environment variables
 vercel env add GROQ_API_KEY production
-# Paste: <REDACTED_API_KEY>
+# Enter your Groq API key when prompted; never commit it.
 
 vercel env add HUGGINGFACE_TOKEN production
-# Paste: <REDACTED_API_KEY>
+# Enter your Hugging Face token when prompted; never commit it.
 
 # Deploy to production
 vercel --prod
@@ -87,9 +87,8 @@ kill $(lsof -ti:3000)
 
 ## 🔑 API Keys Configuration
 
-### Current Keys:
-- **Groq**: `<REDACTED_API_KEY>...` (from apikey file)
-- **Hugging Face**: `<REDACTED_API_KEY>...` (from apikey file)
+### API Keys:
+Configure your own keys as environment variables. Do not commit credentials.
 
 ### On Vercel:
 These keys will be:

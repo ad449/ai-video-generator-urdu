@@ -22,10 +22,10 @@
 4. Add Environment Variables (IMPORTANT!):
    
    Variable Name: GROQ_API_KEY
-   Value: <REDACTED_API_KEY>
+   Value: Set this in Vercel using your own Groq API key. Do not commit it.
    
    Variable Name: HUGGINGFACE_TOKEN
-   Value: <REDACTED_API_KEY>
+   Value: Set this in Vercel using your own Hugging Face token. Do not commit it.
 
 5. Click "Deploy"
 
